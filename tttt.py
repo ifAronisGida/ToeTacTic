@@ -1,13 +1,13 @@
 import random
 import os
-
+#generates board as a list
 def generateTable():
     table = []
     for x in range(0, 9):
         table.append(str(x + 1))
     return table
 
-
+#checks if someone won
 def is_win(table, win=False):
     for x in range(0, 3):
         y = x * 3
@@ -29,7 +29,7 @@ def is_win(table, win=False):
         printBoard(table)
         return win
 
-
+#checks if there is no more space -> tie
 def is_tie(table, tie, win):
     if(len(set(table)) == 2):
         if not win:
@@ -38,7 +38,7 @@ def is_tie(table, tie, win):
             printBoard(table)
             return tie
 
-
+#prints end of game messages, increases scores
 def winmsg(tie, p1turn, p1, p2):
     global player1score, player2score
     if tie:
@@ -62,20 +62,21 @@ def winmsg(tie, p1turn, p1, p2):
             os.system('spd-say -r -50 "Player 1 wins"')
             player1score += 1
 
-
+#prints message if input is invalid
 def giveError():
     print("\u001b[33m\nMust be a number between 1 and 9!\n\u001b[0m")
 
-
+#prints message if the place is already taken
 def giveIllegalMove():
     print("\u001b[33m\nThat number is already taken, chose another!\n\u001b[0m")
 
-
+#prints welcome message
 def welcome():
     os.system('clear')
     print("\u001b[33mWelcome to our ToeTacTic demo!\n\u001b[0m")
 
-
+#prints more endgame messages and takes input -> restarts game
+#could refactor into more functions
 def restart(p1, p2):
     print("\u001b[36mThe score is: \n\u001b[0m")
     print("\u001b[31m" + str(p1) + ": " + str(player1score) + "\u001b[0m")
@@ -100,19 +101,21 @@ def restart(p1, p2):
         os.system('spd-say -r -50 "Good bye"')
         quit()
 
-
+#takes first players name
 def input_p1():
     os.system('spd-say -r -50 "What is your name human?"')
     p1 = input("\u001b[31mFirst player's name: \n\u001b[0m")
     return p1
 
-
+#takes second players name
 def input_p2():
     os.system('spd-say -r -50 "type ai to free me"')
     p2 = input("\u001b[34mSecond player's name: (Type 'AI' to play against the AI) \n\u001b[0m")
     return p2
 
-
+#game script
+#initializes variables and uses control flow to make the game run
+#could refactor into parts
 def main(p1, p2):
     table = generateTable()
     p1turn = True
@@ -214,7 +217,7 @@ def main(p1, p2):
     winmsg(tie, p1turn, p1, p2)
     restart(p1, p2)
 
-
+#prints the board
 def printBoard(table):
     print('\
  ┌───┬───┬───┐\n\
@@ -226,7 +229,8 @@ def printBoard(table):
  └───┴───┴───┘ '.format(
                *table))
 
-
+#initializes some global variables -> should be in main
+#calls game functions to start game
 player1score = 0
 player2score = 0
 welcome()
